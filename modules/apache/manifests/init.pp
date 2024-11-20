@@ -25,7 +25,21 @@ class apache {
   package { 'apache2':
     ensure => installed,  # Garantiza que el paquete de Apache esté presente en el sistema.
   }
+  # Elimina la configuración predeterminada para evitar conflictos
+  file { '/etc/apache2/sites-enabled/000-default.conf':
+    ensure => absent, # Asegura que este archivo no esté presente
+    require => Package['apache2'], # Solo después de instalar Apache
+    notify  => Service['apache2'], # Notifica a Apache para recargar la configuración
+  }
 
+  # Deshabilita el sitio predeterminado mediante el comando `a2dissite`
+  exec { 'disable-default-site':
+    command => '/usr/sbin/a2dissite 000-default',
+    onlyif  => '/bin/ls /etc/apache2/sites-enabled/000-default.conf', # Solo si el sitio predeterminado está habilitado
+    require => Package['apache2'], # Requiere que Apache esté instalado
+    notify  => Service['apache2'], # Notifica a Apache para recargar la configuración
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin', # Define las rutas para encontrar los comandos
+  }
   # Gestiona el servicio de Apache, asegurándose de que esté en ejecución y configurado para iniciarse al arrancar el sistema.
   service { 'apache2':
     ensure => running,  # Asegura que el servicio esté en ejecución.

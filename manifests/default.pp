@@ -7,17 +7,23 @@
 # (/vagrant es el directorio compartido donde se encuentra el Vagrantfile en la MV, (se crea por defecto por vagrant al lanzar la mv))
 $document_root = '/vagrant'
 
+# Instalación de PHP
+package { ['php', 'php-mysql']:
+  ensure  => installed,
+  require => Package['apache2'], # Requiere Apache instalado
+}
+
+############################################# APACHE
 # Include --> sirve para declarar los modulos que se van a usar en la configuración de esta mv
 # Incluye el módulo de Apache, lo que permite instalar y configurar el servicio Apache en la MV.
 include apache
-
-# Ejecuta un comando condicionalmente para mostrar un mensaje solo si falta el archivo `index.html`.
-# Este recurso es útil para comprobar si el archivo de inicio está presente en el directorio raíz.
-exec { 'Skip Message': # Nombre del recurso Puppet
-  command => "echo 'Este mensaje sólo se muestra si no se ha copiado el fichero index.html'",  # Comando a ejecutar si la condición `unless` no se cumple.
-  unless  => "test -f ${document_root}/index.html",  # Solo se ejecuta si `index.html` no existe en `$document_root`.
-  path    => "/bin:/sbin:/usr/bin:/usr/sbin",  # Define las rutas donde buscar los binarios necesarios para ejecutar el comando.(busca en /bin, busca en /usr/bin...), (puppet necesita que se defina con los exec)
-}
+############################## MYSQL
+# Incluye el módulo de MySQL, lo que permite instalar y configurar el servicio MySQL en la MV.
+include mysql
+############################################# WORDPRESS
+# Incluir el módulo de WordPress (se ponde despues de PHP,mysql y apache para que se instale despues de estos, ya que depende de ellos)
+include wordpress
+#############################################
 
 # Declara una variable `$ipv4_address` que obtiene la IP de la MV.
 # `$facts` es una variable global en Puppet que contiene información del sistema, como la red y el hardware.
