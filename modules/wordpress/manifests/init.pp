@@ -1,17 +1,23 @@
+#Define el manifiesto principal del modulo de wordpress. Con este manifiesto se configura e instala wordpress en la mv.
+#Se asegura de que el servicio de wordpress este en ejecución y se configura
+# para que apache redirija el tráfico al servicio de wordpress.
+
 class wordpress {
 
+  $wordpress_url = 'https://wordpress.org/latest.tar.gz' #link de descarga de wordpress
+
   # Descarga y extracción de WordPress
-  exec { 'download-wordpress':
-    command => '/usr/bin/wget -q -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz',
-    creates => '/tmp/wordpress.tar.gz', # Evita descargarlo si ya existe
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin', # Define las rutas para encontrar comandos
+  exec { 'download-wordpress': #nombre de recurso
+    command => "/usr/bin/wget -q -O /opt/wordpress.tar.gz ${wordpress_url}", #comando para descargar wordpress
+    creates => '/opt/wordpress.tar.gz', # Evita descargarlo si ya existe 
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin', # Define las rutas para encontrar comando wget
     require => Package['apache2'], # Requiere Apache instalado
   }
 
 
   # Extraer WordPress en el directorio /var/www/html
   exec { 'extract-wordpress':
-    command => '/bin/tar -xzvf /tmp/wordpress.tar.gz -C /var/www/html',
+    command => '/bin/tar -xzvf /opt/wordpress.tar.gz -C /var/www/html',
     creates => '/var/www/html/wordpress', # Evita reextraer si el directorio ya existe
     require => Exec['download-wordpress'], # Depende de que el archivo de WordPress esté descargado
     path    => '/bin:/usr/bin:/sbin:/usr/sbin', # Rutas para encontrar el comando tar
@@ -24,13 +30,14 @@ class wordpress {
     path    => '/bin:/usr/bin:/sbin:/usr/sbin', # Rutas para encontrar el comando chown
   }
 
-  # Crear archivo de configuración de Apache para WordPress
+############################################################33
+  # Crear archivo de configuración de Apache para WordPress, antes de descargar wordpress nos aseguramos que estuviera instalado apache2
   file { '/etc/apache2/sites-available/wordpress.conf':
     ensure  => file, # Garantiza que sea un archivo
     content => template('wordpress/wordpress.conf.erb'), # Usar plantilla para configurar el virtual host
     require => Exec['set-wordpress-permissions'], # Depende de que los permisos estén configurados
   }
-
+##############################################################
   # Activar el sitio de WordPress en Apache
   exec { 'enable-wordpress-site':
     command => '/usr/sbin/a2ensite wordpress && /usr/bin/systemctl reload apache2',
