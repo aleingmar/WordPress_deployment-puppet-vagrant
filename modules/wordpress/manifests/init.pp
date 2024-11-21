@@ -5,7 +5,19 @@
 class wordpress {
 
   $wordpress_url = 'https://wordpress.org/latest.tar.gz' #link de descarga de wordpress
+  $db_name         = 'wordpress'
+  $db_user         = 'wordpressuser'
+  $db_password     = 'securepassword123'
+  $auth_key        = 'GENERATE_YOUR_KEY'
+  $secure_auth_key = 'GENERATE_YOUR_KEY'
+  $logged_in_key   = 'GENERATE_YOUR_KEY'
+  $nonce_key       = 'GENERATE_YOUR_KEY'
+  $auth_salt       = 'GENERATE_YOUR_KEY'
+  $secure_auth_salt = 'GENERATE_YOUR_KEY'
+  $logged_in_salt  = 'GENERATE_YOUR_KEY'
+  $nonce_salt      = 'GENERATE_YOUR_KEY'
 
+  
   # Descarga y extracción de WordPress
   exec { 'download-wordpress': #nombre de recurso
     command => "/usr/bin/wget -q -O /opt/wordpress.tar.gz ${wordpress_url}", #comando para descargar wordpress
@@ -21,6 +33,13 @@ class wordpress {
     creates => '/var/www/html/wordpress', # Evita reextraer si el directorio ya existe
     require => Exec['download-wordpress'], # Depende de que el archivo de WordPress esté descargado
     path    => '/bin:/usr/bin:/sbin:/usr/sbin', # Rutas para encontrar el comando tar
+  }
+
+  # Crear archivo de configuración de WordPress a partir del template
+  file { '/var/www/html/wordpress/wp-config.php':
+  ensure  => file,
+  content => template('wordpress/wp-config.php.erb'),
+  require => Exec['extract-wordpress'],
   }
 
   # Configurar permisos para WordPress
