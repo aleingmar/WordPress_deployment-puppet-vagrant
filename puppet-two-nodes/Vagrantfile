@@ -1,0 +1,37 @@
+# Levanto dos máquinas virtuales con vagrant, una será el cliente y la otra el servidor de puppet (puppet master)
+# IMPORTANTE --> siempre, por defecto,vagrant mapea el directorio donde se encuentra el Vagrantfile en /vagrant en la máquina virtual
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/ubuntu-20.04" #box (so base) unico para las dos maquinas
+  
+  
+  # Puppet Master
+  config.vm.define 'puppetmaster' do |puppetmaster|
+   
+    puppetmaster.vm.network "private_network", ip: "172.17.177.21" #red privada
+    puppetmaster.vm.hostname = "puppetmaster"
+    puppetmaster.vm.provider "virtualbox" do |vb|
+      vb.name = "puppetmaster" #nombre de la maquina
+      vb.memory = "1024"
+    puppetmaster.vm.provision "file", source: "./puppetMaster", destination: "/vagrant/puppetMaster"
+    puppetmaster.vm.provision "shell", path: "./puppetMaster/script.sh"
+  end
+
+  end
+
+  # Puppet Client
+  config.vm.define "puppetclient" do |puppetclient|
+  
+    puppetclient.vm.network "private_network", ip: "172.17.177.11" #red privada
+    puppetclient.vm.hostname = "puppetclient" 
+    puppetclient.vm.provider "virtualbox" do |vb|
+      vb.name = "puppetclient" #nombre de la maquina
+      vb.memory = "1024"
+    puppetclient.vm.provision "file", source: "./puppetClient", destination: "/vagrant/puppetClient"
+    puppetclient.vm.provision "shell", path: "./puppetClient/script.sh"
+    end
+	
+  end
+
+end

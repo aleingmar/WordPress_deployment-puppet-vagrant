@@ -1,0 +1,10 @@
+# Esta plantilla de configuración define un host virtual en Apache.
+# Un virtualhost es un método para alojar múltiples dominios (distintos servicios/paginaswebs...) en un solo servidor web y que pueda redireccionar el trafico a cada uno de ellos según la petición del cliente.
+# DocumentRoot indica el directorio raíz desde el cual Apache servirá los archivos web.
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/wordpress
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

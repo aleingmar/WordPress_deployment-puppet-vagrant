@@ -1,0 +1,13 @@
+# Configuración de MySQL
+mysql::db_name: 'wordpress'
+mysql::db_user: 'wordpressuser'
+mysql::db_password: 'securepassword123'
+
+#Configuración de WordPress
+wordpress::url: 'http://localhost:8080'
+wordpress::wp_title: 'Mi Sitio WordPress'
+wordpress::admin_user: 'admin'
+wordpress::admin_password: 'password'
+wordpress::admin_email: 'admin@example.com'
+wordpress::path: '/var/www/html/wordpress'
+wordpress::allow_root: true

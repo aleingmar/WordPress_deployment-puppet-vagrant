@@ -1,0 +1,10 @@
+---
+# Define la configuración de Hiera, herramienta que sirve para separar los datos sensibles de tu código
+version: 5
+defaults:
+  datadir: "/vagrant/data"  # Ruta donde estarán los archivos YAML dentro de la VM
+  data_hash: yaml_data
+
+hierarchy:
+  - name: "Common data"
+    path: "common.yaml"  # Archivo YAML para datos comunes

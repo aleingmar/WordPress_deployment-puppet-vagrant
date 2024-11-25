@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS wordpress;
+CREATE USER '<%= @db_user %>'@'localhost' IDENTIFIED BY '<%= @db_password %>';
+GRANT ALL PRIVILEGES ON <%= @db_name %>.* TO '<%= @db_user %>'@'localhost';
+FLUSH PRIVILEGES;

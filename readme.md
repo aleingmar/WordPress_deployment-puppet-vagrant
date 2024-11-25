@@ -13,7 +13,7 @@ Antes de desplegar el entorno WordPress configurado, es necesario realizar varia
 ### Versiones disponibles
 El proyecto incluye dos versiones del entorno, organizadas en directorios separados:
 
-- `/puppet-one-slaves`
+- `/puppet-two-nodes`
 En esta versión se despliegan dos nodos Puppet: un Puppet Master y un Puppet Client.
 
 Cada cliente (nodo) aloja un entorno de WordPress, aprovisionado con las directivas enviadas desde el Puppet Master. Cada min los puppet clients solicitan la nueva configuracon de pupet si la hubiera mediante una tarea cron.
