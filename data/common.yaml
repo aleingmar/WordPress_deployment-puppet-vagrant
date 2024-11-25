@@ -1,0 +1,3 @@
+mysql::db_name: 'wordpress'
+mysql::db_user: 'wordpressuser'
+mysql::db_password: 'securepassword123'

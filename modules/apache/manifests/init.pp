@@ -1,4 +1,4 @@
-# Este archivo `site.pp` define la clase `apache`, que especifica el estado deseado para la instalación,
+# Este archivo `init.pp` define la clase `apache`, que especifica el estado deseado para la instalación,
 # configuración y gestión del servidor Apache en la máquina virtual.
 # La clase `apache` garantiza que Apache esté instalado y en ejecución. Esta configuración también elimina
 # el archivo de configuración predeterminado de Apache para evitar conflictos con wordpress.

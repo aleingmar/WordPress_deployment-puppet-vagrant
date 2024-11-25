@@ -39,6 +39,7 @@ Vagrant.configure("2") do |config|  # Configura Vagrant con la versión 2 de su 
     puppet.module_path = "modules"        # Carpeta donde se almacenan los módulos de Puppet.
     puppet.manifests_path = "manifests"   # Carpeta que contiene los manifiestos de configuración.
     puppet.manifest_file = "default.pp"   # Archivo de manifiesto principal para aprovisionar la MV.
+    puppet.hiera_config_path = "hiera.yaml" # Archivo de configuración de Hiera para Puppet, para gestionar datos (variables)
   end
 
 end

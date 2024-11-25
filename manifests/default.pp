@@ -1,4 +1,4 @@
-# Este archivo `default.pp` es el manifiesto principal para configurar la máquina virtual (MV) con Puppet. (a partir de este se llaman a los modulos que se van a usar)
+# Este archivo `default.pp` es el manifiesto principal para configurar la máquina virtual (MV) con Puppet.
 # Sirve como punto de entrada y contiene las configuraciones esenciales que Vagrant utiliza para aprovisionar la MV.
 # Este manifiesto permite centralizar la configuración de Apache en un solo lugar, facilitando la personalización
 # y el control sin necesidad de modificar directamente el módulo de Apache.
@@ -7,21 +7,20 @@
 # (/vagrant es el directorio compartido donde se encuentra el Vagrantfile en la MV, (se crea por defecto por vagrant al lanzar la mv))
 $document_root = '/vagrant'
 
-# Instalación en la mv de PHP normal y librerias necesiarias para que apps escritas en PHP interactuen con BD mysq
+# Instalación en la MV de PHP normal y librerías necesarias para que apps escritas en PHP interactúen con BD MySQL
 package { ['php', 'php-mysql']:
   ensure  => installed,
-  require => Package['apache2'], # Requiere Apache instalado
+  require => Package['apache2'], # Requiere Apache instalado, ya que PHP necesita integrarse con Apache
 }
 
-############################################# APACHE
-# Include --> sirve para declarar los modulos que se van a usar en la configuración de esta mv
+############################################# INCLUSIÓN DE MÓDULOS
 # Incluye el módulo de Apache, lo que permite instalar y configurar el servicio Apache en la MV.
 include apache
-############################## MYSQL
+
 # Incluye el módulo de MySQL, lo que permite instalar y configurar el servicio MySQL en la MV.
 include mysql
-############################################# WORDPRESS
-# Incluir el módulo de WordPress (se ponde despues de PHP,mysql y apache para que se instale despues de estos, ya que depende de ellos)
+
+# Incluye el módulo de WordPress (se pone después de PHP, MySQL y Apache para que se instale después de estos, ya que depende de ellos)
 include wordpress
 #############################################
 
