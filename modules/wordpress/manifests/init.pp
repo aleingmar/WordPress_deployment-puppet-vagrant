@@ -4,11 +4,22 @@
 #3. Configura el servicio de apache para que redirija el tráfico al servicio de wordpress y sirva su contenido.
 
 class wordpress {
-
+  
   $wordpress_url = 'https://wordpress.org/latest.tar.gz' #link de descarga de wordpress
+  
+  # Variables para la configuración de Mysql (obtenidas con hiera)
   $db_name     = lookup('mysql::db_name')
   $db_user     = lookup('mysql::db_user')
   $db_password = lookup('mysql::db_password')
+
+  # Variables para la configuración de Wordpress (obtenidas con hiera)
+  $url           = lookup('wordpress::url')
+  $wp_title         = lookup('wordpress::wp_title')
+  $admin_user    = lookup('wordpress::admin_user')
+  $admin_password = lookup('wordpress::admin_password')
+  $admin_email   = lookup('wordpress::admin_email')
+  $path          = lookup('wordpress::path')
+  $allow_root    = lookup('wordpress::allow_root')
 
   #################################### INSTALACION Y CONFIGURACION DE WORDPRESS
 
@@ -58,7 +69,7 @@ class wordpress {
 
   # Completar la instalación de WordPress (hasta ahora solo he creado la bd que va a usar y he instalado el paquete de wordpress)
   exec { 'wordpress-install':
-    command => 'wp core install --url="http://localhost:8080" --title="Mi Sitio WordPress" --admin_user="admin" --admin_password="password" --admin_email="admin@example.com" --path=/var/www/html/wordpress --allow-root',
+    command => "wp core install --url=\"${url}\" --title=\"${wp_title}\" --admin_user=\"${admin_user}\" --admin_password=\"${admin_password}\" --admin_email=\"${admin_email}\" --path=${path} --allow-root=${allow_root}",
     path    => '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin', # Rutas donde buscar WP-CLI y otros comandos
     require => [File['/var/www/html/wordpress/wp-config.php'], Exec['install-wp-cli']], # Asegura wp-config.php y WP-CLI este instalado
   }

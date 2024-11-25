@@ -7,6 +7,7 @@
 # (/vagrant es el directorio compartido donde se encuentra el Vagrantfile en la MV, (se crea por defecto por vagrant al lanzar la mv))
 $document_root = '/vagrant'
 
+############################################# Instalacion de paquetes PHP (se ejecuta despues del modulo de apache)
 # Instalación en la MV de PHP normal y librerías necesarias para que apps escritas en PHP interactúen con BD MySQL
 package { ['php', 'php-mysql']:
   ensure  => installed,
