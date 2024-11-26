@@ -5,7 +5,7 @@
 #   - Se establece la memoria de la máquina virtual en 1024 MB.
 #   - Se instala Puppet para gestionar y aprovisionar la configuración del servidor.
 #   - Se instala puppet en modo agente para no depender de un servidor Puppet maestro.
-#   - Se indica que Puppet usará el manifiesto `default.pp` y el módulo de configuración desde el directorio `modules`.
+#   - Se indica que Puppet usará el manifiesto `default.pp`, el módulo de configuración desde el directorio `modules` y el archivo de configuración de Hiera `hiera.yaml`.
 
 Vagrant.configure("2") do |config|  # Configura Vagrant con la versión 2 de su API.
 
