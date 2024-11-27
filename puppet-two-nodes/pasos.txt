@@ -1,0 +1,31 @@
+1 server
+sudo systemctl start puppetserver
+sudo systemctl enable puppetserver
+
+2 cliente
+sudo systemctl start puppet 
+sudo systemctl enable puppet
+
+Intercambio de certificados (tras el start del cliente le pide al server que firme su certificado)
+3 server#####################3aqui
+sudo /opt/puppetlabs/bin/puppetserver ca sign --all
+
+4 cliente (pedir la configuración al master)####################
+sudo /opt/puppetlabs/bin/puppet agent --test
+
+5 server (ejecutar en el)
+sudo vim /etc/puppetlabs/code/environments/production/manifests/site.pp
+
+añadir:
+   node 'puppetclient' {
+      file { '/newfolder':
+      ensure => 'directory',
+      }
+
+      file { '/newfolder/hola.txt':
+         ensure => present,
+      }
+   }
+
+6 cliente: (vuelva a pedir la configuración al master)
+sudo /opt/puppetlabs/bin/puppet agent --test

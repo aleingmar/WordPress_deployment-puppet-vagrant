@@ -14,22 +14,21 @@ Vagrant.configure("2") do |config|
     puppetmaster.vm.provider "virtualbox" do |vb|
       vb.name = "puppetmaster" #nombre de la maquina
       vb.memory = "1024"
-    puppetmaster.vm.provision "file", source: "./puppetMaster", destination: "/vagrant/puppetMaster"
-    puppetmaster.vm.provision "shell", path: "./puppetMaster/script.sh"
+    puppetmaster.vm.provision "shell", path: "./puppetMaster/script.sh", run: "once"
   end
 
   end
 
   # Puppet Client
   config.vm.define "puppetclient" do |puppetclient|
-  
+    
+    config.vm.network "forwarded_port", guest: 80, host: 8080
     puppetclient.vm.network "private_network", ip: "172.17.177.11" #red privada
     puppetclient.vm.hostname = "puppetclient" 
     puppetclient.vm.provider "virtualbox" do |vb|
       vb.name = "puppetclient" #nombre de la maquina
       vb.memory = "1024"
-    puppetclient.vm.provision "file", source: "./puppetClient", destination: "/vagrant/puppetClient"
-    puppetclient.vm.provision "shell", path: "./puppetClient/script.sh"
+    puppetclient.vm.provision "shell", path: "./puppetClient/script.sh", run: "once"
     end
 	
   end

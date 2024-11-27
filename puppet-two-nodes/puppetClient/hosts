@@ -2,7 +2,7 @@
 127.0.0.1 localhost
 127.0.1.1 vagrant
 172.17.177.11 puppetclient
-172.17.177.21 puppetmaster.ita.es puppet
+172.17.177.21 puppetmaster puppet
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback
