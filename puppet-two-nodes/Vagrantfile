@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
   # Puppet Client
   config.vm.define "puppetclient" do |puppetclient|
     
-    config.vm.network "forwarded_port", guest: 80, host: 8080
+    #puppetclient.vm.network "forwarded_port", guest: 80, host: 8081 #NOFUNCIONA genera conflicto
     puppetclient.vm.network "private_network", ip: "172.17.177.11" #red privada
     puppetclient.vm.hostname = "puppetclient" 
     puppetclient.vm.provider "virtualbox" do |vb|
